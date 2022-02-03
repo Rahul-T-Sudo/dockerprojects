@@ -10,23 +10,24 @@ on:
     branches: [ new-ci-workflow ]
 
 jobs:
-  build:
+  build-java:
 
-    runs-on: ${{matrix}}
-    strategy: 
-      matrix: 
-       os: [ubuntu-latest, windows-latest, macOS-latest]
-
+    runs-on: ubuntu-latest
+    
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
     - name: Build with Gradle
       run: ./gradlew build
+
     
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
@@ -36,3 +37,8 @@ jobs:
          registry: docker.io
          username: ${{ secrets.DOCKER_USERNAME }}
          password: ${{ secrets.DOCKER_PASSWORD }}  
+
+
+    
+         
+
